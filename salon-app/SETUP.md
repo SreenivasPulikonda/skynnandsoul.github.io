@@ -1,5 +1,7 @@
 # Put the salon app online
 
+For the free GitHub Pages SAMPLE, use the repository-root `GITHUB-PAGES-BEGINNER-GUIDE.md`. The server setup below is separate and is not needed to publish that sample.
+
 This needs one GitHub account, one Cloudflare account and Node.js 22 or newer on your computer. The production setup is configured for **Cloudflare Workers Paid**, with a 30-second CPU limit. Password hashing, encryption and whole-file imports need more CPU time than the Free plan's 10 ms request allowance. Check Cloudflare's current plan and pricing before enabling it. No subscription or live deployment has been made by the supplied files.
 
 Your existing public GitHub repository holds the app code and sample demo. Your business records go into a separate **private** repository in the same GitHub account. Cloudflare stores the app's secrets and processes requests in memory; the app does not create a Cloudflare database, KV store or R2 bucket.

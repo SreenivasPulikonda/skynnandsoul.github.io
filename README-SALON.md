@@ -1,15 +1,25 @@
-# Skynn & Soul Salon App
+# Skynn & Soul: GitHub Pages sample app
 
-The salon app source is in **salon-app/**. The existing website home page is preserved.
+**Start here:** [Beginner instructions for GitHub Pages](GITHUB-PAGES-BEGINNER-GUIDE.md).
 
-- [Interactive sample demo](salon/index.html)
-- [Features and limits](salon-app/README.md)
-- [Set up the live app](salon-app/SETUP.md)
-- [Daily operating guide](salon-app/docs/OPERATING-GUIDE.md)
+The repository root now opens the static sample app. No Cloudflare account, paid plan, access token or command line is needed to publish this sample on GitHub Pages.
+
+## Public sample logins
+
+| Role | Username | Demo password |
+|---|---|---|
+| Salon manager | manager | ManagerDemo2026! |
+| Salon owner | owner | OwnerDemo2026! |
+
+These are public demo access codes, not protected accounts. Use fictional information only. Records entered into the demo stay in that browser. They are NOT saved to GitHub and are NOT shared across devices. The original requirement for secure shared manager/owner records is not fulfilled by this Pages demonstration.
+
+## Publish the sample
+
+In this repository, open **Settings → Pages → Deploy from a branch → master → / (root) → Save**. Wait for a successful Pages deployment and open the link GitHub displays. See the beginner guide for every step.
+
+The old home page is preserved at `previous-homepage/index.html`. The source and separate server-based implementation remain in `salon-app/`. Its Cloudflare deployment workflow is manual and is not used by the Pages sample.
+
+- [Open the sample app](salon/index.html)
+- [GitHub Pages beginner guide](GITHUB-PAGES-BEGINNER-GUIDE.md)
+- [Feature list and limits](salon-app/README.md)
 - [Validation record](salon-app/docs/VALIDATION.md)
-
-The demo uses fictional records saved only in the current browser. It is not the production billing system.
-
-For real use, deploy the included Cloudflare Worker and keep encrypted salon data in a separate private GitHub repository. The owner and manager use that live HTTPS address with their separate passwords. GitHub Pages hosts the sample project demonstration only.
-
-No passwords, API tokens or real customer records are included. The live setup must be completed before using real data.

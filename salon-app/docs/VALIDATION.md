@@ -46,3 +46,7 @@ The design includes responsive layouts and mobile navigation. Desktop UI was ins
 ## Before real use
 
 The owner must still verify the deployed Cloudflare runtime, the private repository/token, separate-device sharing, receipt printing, tax configuration and their actual service prices. The live GitHub/Cloudflare integration was not exercised with the owner's production credentials. No real salon records or credentials were supplied or used.
+
+## GitHub Pages sample update
+
+The static demo now has public username/password fields for trying each role. These checks run in the browser and provide no private-account security. The production server login is unchanged. The sample login screen was inspected in the browser; the build and the existing 26 business/server tests pass. The project root redirects to the sample, and the prior root page is retained separately. A GitHub Pages deployment still needs to be enabled in repository settings.

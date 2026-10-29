@@ -6,7 +6,7 @@ A browser app for salon billing, clients, bookings, stock, staff and owner repor
 
 ## Try the app
 
-Open `dist/Skynn-Soul-Interactive-Demo.html` in a modern browser. Choose **Salon manager** or **Salon owner**, then open the demo. No password is needed. Changes are saved in that browser. Sign out and open the other role to see the same demo records.
+Open `dist/Skynn-Soul-Interactive-Demo.html` in a modern browser. Choose **Salon manager** or **Salon owner**, then open the demo. The public sample logins are `manager` / `ManagerDemo2026!` and `owner` / `OwnerDemo2026!`. These are demonstration access codes, not private accounts. Changes are saved in that browser. Sign out and open the other role to see the same demo records.
 
 The demo is for sample data only. It is not a secure production login, does not save to GitHub and cannot share records across different computers. Clearing browser storage resets it. Open the downloaded HTML in Chrome, Edge or Firefox if your file preview does not allow scripts.
 
@@ -32,7 +32,7 @@ The manager runs daily operations. The owner can do all daily work and also cont
 
 Source destination: `SreenivasPulikonda/skynnandsoul.github.io`.
 
-The existing root `index.html` is preserved. The additions use:
+The repository root opens the Pages demonstration. The old root home page is preserved at `previous-homepage/index.html`. See the repository's `GITHUB-PAGES-BEGINNER-GUIDE.md` for the free preview setup. The additions use:
 
 - `salon-app/`: app source, production server, tests, setup steps and templates.
 - `salon/index.html`: sample-data demonstration for the GitHub Pages project.
