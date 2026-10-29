@@ -1,0 +1,17 @@
+import { AppError, assert } from '../src/domain.js';
+const enc=new TextEncoder(),dec=new TextDecoder();
+export function base64(bytes){let s='';for(let i=0;i<bytes.length;i+=8192)s+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(s);}
+export const unbase64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const b64url=b=>base64(b).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
+const unurl=s=>unbase64(s.replaceAll('-','+').replaceAll('_','/'));
+export async function passwordHash(password,salt=crypto.getRandomValues(new Uint8Array(16)),iterations=100000){const key=await crypto.subtle.importKey('raw',enc.encode(password),'PBKDF2',false,['deriveBits']);const hash=await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations,hash:'SHA-256'},key,256);return `${iterations}.${base64(salt)}.${base64(new Uint8Array(hash))}`;}
+export async function verifyPassword(password,record){const [n,salt]=record.split('.');assert(Number(n)>=100000&&Number(n)<=100000,'Login configuration needs attention.',503);const result=await passwordHash(password,unbase64(salt),Number(n));let diff=result.length^record.length;for(let i=0;i<Math.max(result.length,record.length);i++)diff|=(result.charCodeAt(i)||0)^(record.charCodeAt(i)||0);return diff===0;}
+async function hmac(secret){return crypto.subtle.importKey('raw',unbase64(secret),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);}
+export async function signSession(payload,secret){const data=b64url(enc.encode(JSON.stringify(payload)));const sig=await crypto.subtle.sign('HMAC',await hmac(secret),enc.encode(data));return data+'.'+b64url(new Uint8Array(sig));}
+export async function readSession(token,secret,epoch='1',at=Date.now()){try{const [data,sig,...rest]=token.split('.');if(rest.length||!data||!sig)return null;const valid=await crypto.subtle.verify('HMAC',await hmac(secret),unurl(sig),enc.encode(data));if(!valid)return null;const p=JSON.parse(dec.decode(unurl(data)));if(!['manager','owner'].includes(p.role)||p.epoch!==epoch||p.exp<=at||p.iat>at+30000||typeof p.csrf!=='string')return null;return p;}catch{return null;}}
+export async function encryptState(state,keyText){const key=await crypto.subtle.importKey('raw',unbase64(keyText),'AES-GCM',false,['encrypt']);const iv=crypto.getRandomValues(new Uint8Array(12));const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:enc.encode('skynn-soul-v1')},key,enc.encode(JSON.stringify(state)));return {format:'skynn-soul-aes-gcm-v1',iv:base64(iv),data:base64(new Uint8Array(cipher))};}
+export async function decryptState(envelope,keyText){try{assert(envelope.format==='skynn-soul-aes-gcm-v1','Unsupported data file.');const key=await crypto.subtle.importKey('raw',unbase64(keyText),'AES-GCM',false,['decrypt']);const bytes=await crypto.subtle.decrypt({name:'AES-GCM',iv:unbase64(envelope.iv),additionalData:enc.encode('skynn-soul-v1')},key,unbase64(envelope.data));return JSON.parse(dec.decode(bytes));}catch{throw new AppError('The saved data could not be opened. Check the encryption key. No data was overwritten.',503);}}
+export function sessionCookie(token,maxAge=28800){return `salon_session=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`;}
+export function getCookie(request){return request.headers.get('cookie')?.split(';').map(x=>x.trim()).find(x=>x.startsWith('salon_session='))?.slice(14)||'';}
+export const utf8base64=s=>base64(enc.encode(s));
+export const base64utf8=s=>dec.decode(unbase64(s));
